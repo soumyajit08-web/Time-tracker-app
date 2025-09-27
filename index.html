@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeFlow - Modern Time Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Dynamic particles -->
+    <div class="particle" style="width: 80px; height: 80px; top: 10%; left: 15%; animation-delay: 0s; background: rgba(255, 107, 107, 0.2);"></div>
+    <div class="particle" style="width: 60px; height: 60px; top: 70%; left: 80%; animation-delay: 3s; background: rgba(78, 205, 196, 0.2);"></div>
+    <div class="particle" style="width: 100px; height: 100px; top: 40%; left: 70%; animation-delay: 6s; background: rgba(167, 139, 250, 0.2);"></div>
+    <div class="particle" style="width: 40px; height: 40px; top: 80%; left: 20%; animation-delay: 9s; background: rgba(255, 217, 61, 0.2);"></div>
+
+    <div class="main-container">
+        <div class="header">
+            <div class="theme-controls">
+                <button class="control-btn" id="themeToggle" onclick="toggleTheme()">🌙 Dark</button>
+                <button class="control-btn" id="formatToggle" onclick="toggleTimeFormat()">24H</button>
+            </div>
+            <h1 class="app-title">TimeFlow</h1>
+            <p class="subtitle">Modern Time Tracking Experience</p>
+            <p class="time-period" id="timePeriod">Good Morning</p>
+        </div>
+
+        <div class="nav-pills">
+            <button class="nav-pill active" onclick="switchPanel('clock')">Live Clock</button>
+            <button class="nav-pill" onclick="switchPanel('world')">World Time</button>
+            <button class="nav-pill" onclick="switchPanel('pomodoro')">Focus Timer</button>
+            <button class="nav-pill" onclick="switchPanel('stopwatch')">Stopwatch</button>
+            <button class="nav-pill" onclick="switchPanel('settings')">Settings</button>
+        </div>
+
+        <div class="content-area">
+            <!-- Main Clock Panel -->
+            <div id="clock" class="tab-panel active">
+                <div class="clock-display">
+                    <div class="main-time" id="mainTime">00:00:00</div>
+                    <div class="date-info" id="mainDate">Loading...</div>
+                    <div class="clock-details">
+                        <div class="detail-card">
+                            <div class="detail-label">Your Timezone</div>
+                            <div class="detail-value" id="userTimezone">---</div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-label">UTC Offset</div>
+                            <div class="detail-value" id="utcOffset">---</div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-label">Day of Year</div>
+                            <div class="detail-value" id="dayOfYear">---</div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-label">Week Number</div>
+                            <div class="detail-value" id="weekNumber">---</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- World Clocks Panel -->
+            <div id="world" class="tab-panel">
+                <div class="world-clocks">
+                    <h2 style="text-align: center; margin-bottom: 40px; color: var(--text-primary);">Global Time Zones</h2>
+                    <div class="world-grid">
+                        <div class="world-clock-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                            <div class="city-name">Tokyo 🌸</div>
+                            <div class="city-time" id="tokyoTime">--:--</div>
+                            <div class="city-date" id="tokyoDate">---</div>
+                        </div>
+                        <div class="world-clock-card" style="background: linear-gradient(135deg, #ff6b6b, #ffd93d);">
+                            <div class="city-name">Dubai 🏜️</div>
+                            <div class="city-time" id="dubaiTime">--:--</div>
+                            <div class="city-date" id="dubaiDate">---</div>
+                        </div>
+                        <div class="world-clock-card" style="background: linear-gradient(135deg, #4ecdc4, #44a08d);">
+                            <div class="city-name">London 🇬🇧</div>
+                            <div class="city-time" id="londonTime">--:--</div>
+                            <div class="city-date" id="londonDate">---</div>
+                        </div>
+                        <div class="world-clock-card" style="background: linear-gradient(135deg, #fa709a, #fee140);">
+                            <div class="city-name">New York 🗽</div>
+                            <div class="city-time" id="nyTime">--:--</div>
+                            <div class="city-date" id="nyDate">---</div>
+                        </div>
+                        <div class="world-clock-card" style="background: linear-gradient(135deg, #a78bfa, #f093fb);">
+                            <div class="city-name">Los Angeles 🌴</div>
+                            <div class="city-time" id="laTime">--:--</div>
+                            <div class="city-date" id="laDate">---</div>
+                        </div>
+                        <div class="world-clock-card" style="background: linear-gradient(135deg, #30cfd0, #330867);">
+                            <div class="city-name">Sydney 🏄‍♂️</div>
+                            <div class="city-time" id="sydneyTime">--:--</div>
+                            <div class="city-date" id="sydneyDate">---</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pomodoro Panel -->
+            <div id="pomodoro" class="tab-panel">
+                <div class="pomodoro-section">
+                    <h2 style="margin-bottom: 40px; color: var(--text-primary);">Focus Session</h2>
+                    <div class="pomodoro-circle" id="pomodoroCircle">
+                        <div class="pomodoro-inner">
+                            <div class="pomodoro-time" id="pomodoroTime">25:00</div>
+                            <div class="pomodoro-status" id="pomodoroStatus">Ready to Focus</div>
+                        </div>
+                    </div>
+                    <div class="pomodoro-controls">
+                        <button class="btn btn-primary" onclick="startPomodoro()">Start Focus</button>
+                        <button class="btn btn-secondary" onclick="resetPomodoro()">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stopwatch Panel -->
+            <div id="stopwatch" class="tab-panel">
+                <div class="stopwatch-section">
+                    <h2 style="margin-bottom: 40px; color: var(--text-primary);">Stopwatch</h2>
+                    <div class="stopwatch-display" id="stopwatchDisplay">00:00:00</div>
+                    <div class="pomodoro-controls">
+                        <button class="btn btn-primary" onclick="startStopwatch()">Start</button>
+                        <button class="btn btn-secondary" onclick="lapTime()">Lap</button>
+                        <button class="btn btn-secondary" onclick="resetStopwatch()">Reset</button>
+                    </div>
+                    <div class="lap-times" id="lapTimes"></div>
+                </div>
+            </div>
+
+            <!-- Settings Panel -->
+            <div id="settings" class="tab-panel">
+                <div class="settings-section">
+                    <h2 style="margin-bottom: 40px; color: var(--text-primary); text-align: center;">Settings</h2>
+                    <div class="settings-grid">
+                        <div class="setting-group">
+                            <div class="setting-title">Time Format</div>
+                            <div class="setting-option">
+                                <span>24-hour format</span>
+                                <div class="toggle-switch" id="timeFormatSwitch" onclick="toggleTimeFormat()"></div>
+                            </div>
+                            <div class="setting-option">
+                                <span>Show seconds</span>
+                                <div class="toggle-switch active" id="secondsSwitch" onclick="toggleSeconds()"></div>
+                            </div>
+                        </div>
+                        <div class="setting-group">
+                            <div class="setting-title">Appearance</div>
+                            <div class="setting-option">
+                                <span>Dark theme</span>
+                                <div class="toggle-switch" id="themeSwitch" onclick="toggleTheme()"></div>
+                            </div>
+                            <div class="setting-option">
+                                <span>Auto theme (based on time)</span>
+                                <div class="toggle-switch active" id="autoThemeSwitch" onclick="toggleAutoTheme()"></div>
+                            </div>
+                        </div>
+                        <div class="setting-group">
+                            <div class="setting-title">Focus Timer</div>
+                            <div class="setting-option">
+                                <span>Focus duration (minutes)</span>
+                                <input type="number" value="25" min="5" max="60" id="focusDuration" onchange="updateFocusDuration()" style="width: 60px; padding: 5px; border-radius: 5px; border: 1px solid var(--glass-border);">
+                            </div>
+                            <div class="setting-option">
+                                <span>Break duration (minutes)</span>
+                                <input type="number" value="5" min="1" max="15" id="breakDuration" style="width: 60px; padding: 5px; border-radius: 5px; border: 1px solid var(--glass-border);">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
